@@ -28,9 +28,3 @@ jobs:
         run: |
           mkdir -p newman-report
           npm run api-tests
-
-      - name: Upload Newman HTML Report
-        uses: actions/upload-artifact@v3
-        with:
-          name: newman-report
-          path: newman-report/index.html
