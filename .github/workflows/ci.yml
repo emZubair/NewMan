@@ -17,8 +17,8 @@ jobs:
 
       - name: Install Dependencies
         run: npm ci
-        
-      - name: Install Newman
+
+      - name: Install Newman and Reporter
         run: npm install -g newman newman-reporter-html
 
       - name: Clean previous report
@@ -26,7 +26,7 @@ jobs:
 
       - name: Run Postman Collection and generate HTML report
         run: |
-          mkdir newman-report
+          mkdir -p newman-report
           npm run api-tests
         continue-on-error: true
 
