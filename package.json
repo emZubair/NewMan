@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "api-tests": "newman run Alemx.postman_collection.json -r html --reporter-html-export newman-report/index.html"
+    "api-tests": "newman run Alemx.postman_collection.json"
   },
   "keywords": [
     "api",
