@@ -16,10 +16,10 @@ jobs:
           node-version: 18
 
       - name: Install Dependencies
-        run: npm ci
+        run: npm ci --legacy-peer-deps
 
       - name: Install Newman and Reporter
-        run: npm install -g newman newman-reporter-html
+        run: npm install -g newman newman-reporter-html --legacy-peer-deps
 
       - name: Clean previous report
         run: rm -rf newman-report || true
