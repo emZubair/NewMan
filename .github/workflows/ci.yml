@@ -28,7 +28,6 @@ jobs:
         run: |
           mkdir -p newman-report
           npm run api-tests
-        continue-on-error: true
 
       - name: Upload Newman HTML Report
         uses: actions/upload-artifact@v3
