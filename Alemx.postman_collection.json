@@ -662,6 +662,13 @@
 								"type": "text/javascript",
 								"packages": {}
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"packages": {},
+								"type": "text/javascript"
+							}
 						}
 					],
 					"request": {
@@ -674,7 +681,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/wallet/balances?asset_symbol=\"\"",
+							"raw": "{{baseUrl}}/wallet/balances?asset_symbol=\"ALEM\"",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -685,7 +692,7 @@
 							"query": [
 								{
 									"key": "asset_symbol",
-									"value": "\"\""
+									"value": "\"ALEM\""
 								}
 							]
 						}
@@ -3239,7 +3246,7 @@
 							"formdata": [
 								{
 									"key": "data",
-									"value": "{\"location\": {        \"name\": \"testing loc\",        \"city\": \"Lviv\",        \"country\": \"Ukraine\",        \"latitude\": 40.678,        \"longitude\": 45.989   },  \"contents\": [\"1\"], \"allow_comments\": false}",
+									"value": "{\"location\": {        \"name\": \"testing loc\",        \"city\": \"Lviv\",        \"country\": \"Ukraine\",        \"latitude\": 40.678,        \"longitude\": 45.989   },  \"contents\": [\"1\"], \"allow_comments\": true}",
 									"type": "text"
 								}
 							]
@@ -4218,6 +4225,1207 @@
 								"stories",
 								"delete-comment",
 								"{{comment_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reels",
+			"item": [
+				{
+					"name": "Upload Content",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 2s\", function () {\r",
+									"    const expectedTime = Number(pm.collectionVariables.get(\"response_time\"));\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(expectedTime);\r",
+									"});\r",
+									"const schema =\r",
+									"{\r",
+									"  \"title\": \"Generated schema for Root\",\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"success\": {\r",
+									"      \"type\": \"boolean\"\r",
+									"    },\r",
+									"    \"data\": {\r",
+									"      \"type\": \"object\",\r",
+									"      \"properties\": {\r",
+									"        \"id\": {\r",
+									"          \"type\": \"number\"\r",
+									"        },\r",
+									"        \"image_url\": {\r",
+									"          \"type\": \"string\"\r",
+									"        }\r",
+									"      },\r",
+									"      \"required\": [\r",
+									"        \"id\",\r",
+									"        \"image_url\"\r",
+									"      ]\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"success\",\r",
+									"    \"data\"\r",
+									"  ]\r",
+									"};\r",
+									"\r",
+									"let responseData = pm.response.json();\r",
+									"pm.test(\"Response should match the JSON schema\", function () {\r",
+									"    pm.expect(tv4.validate(responseData, schema)).to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Token",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "content",
+									"type": "file",
+									"src": "/C:/Users/Andrii/Downloads/Telegram Desktop/IMG_8561.MP4"
+								},
+								{
+									"key": "filters",
+									"value": "{\"brightness\": 1, \"contrast\": 1, \"saturation\": 1, \"sharpness\": 0, \"rotation\": 0, \"colorHue\": 0}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/reels/upload-content",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reels",
+								"upload-content"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Reel",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse the response\r",
+									"let response = pm.response.json();\r",
+									"\r",
+									"// Check if data and id exist\r",
+									"if (response.data && response.data.id) {\r",
+									"    let reelId = response.data.id;\r",
+									"    \r",
+									"    // Save it as a collection variable\r",
+									"    pm.collectionVariables.set('reel_id', reelId);\r",
+									"    \r",
+									"    console.log('Saved reel_id:', reelId);\r",
+									"} else {\r",
+									"    console.log('No id found in response');\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 2s\", function () {\r",
+									"    const expectedTime = Number(pm.collectionVariables.get(\"response_time\"));\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(expectedTime);\r",
+									"});\r",
+									"const schema =\r",
+									"{\r",
+									"  \"title\": \"Generated schema for Root\",\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"success\": {\r",
+									"      \"type\": \"boolean\"\r",
+									"    },\r",
+									"    \"data\": {\r",
+									"      \"type\": \"object\",\r",
+									"      \"properties\": {\r",
+									"        \"id\": {\r",
+									"          \"type\": \"string\"\r",
+									"        }\r",
+									"      },\r",
+									"      \"required\": [\r",
+									"        \"id\"\r",
+									"      ]\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"success\",\r",
+									"    \"data\"\r",
+									"  ]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"Response should match the JSON schema\", function () {\r",
+									"    pm.expect(tv4.validate(response, schema)).to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Token",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "data",
+									"value": "{\"contents\": [\"840\"], \"location\": null, \"allow_comments\": false}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/reels/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reels",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Reels",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 2s\", function () {\r",
+									"    const expectedTime = Number(pm.collectionVariables.get(\"response_time\"));\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(expectedTime);\r",
+									"});\r",
+									"const schema =\r",
+									"{\r",
+									"  \"title\": \"Generated schema for Root\",\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"success\": {\r",
+									"      \"type\": \"boolean\"\r",
+									"    },\r",
+									"    \"profile\": {\r",
+									"      \"type\": \"object\",\r",
+									"      \"properties\": {\r",
+									"        \"id\": {\r",
+									"          \"type\": \"number\"\r",
+									"        },\r",
+									"        \"user_id\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"username\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"nickname\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"profile_photo\": {}\r",
+									"      },\r",
+									"      \"required\": [\r",
+									"        \"id\",\r",
+									"        \"user_id\",\r",
+									"        \"username\",\r",
+									"        \"nickname\",\r",
+									"        \"profile_photo\"\r",
+									"      ]\r",
+									"    },\r",
+									"    \"data\": {\r",
+									"      \"type\": \"array\",\r",
+									"      \"items\": {\r",
+									"        \"type\": \"object\",\r",
+									"        \"properties\": {\r",
+									"          \"id\": {\r",
+									"            \"type\": \"number\"\r",
+									"          },\r",
+									"          \"reel_id\": {\r",
+									"            \"type\": \"string\"\r",
+									"          },\r",
+									"          \"location\": {},\r",
+									"          \"total_likes\": {\r",
+									"            \"type\": \"number\"\r",
+									"          },\r",
+									"          \"total_comments\": {\r",
+									"            \"type\": \"number\"\r",
+									"          },\r",
+									"          \"total_views\": {\r",
+									"            \"type\": \"number\"\r",
+									"          },\r",
+									"          \"total_shares\": {\r",
+									"            \"type\": \"number\"\r",
+									"          },\r",
+									"          \"is_liked\": {\r",
+									"            \"type\": \"boolean\"\r",
+									"          },\r",
+									"          \"allow_comments\": {\r",
+									"            \"type\": \"boolean\"\r",
+									"          },\r",
+									"          \"reel_images\": {\r",
+									"            \"type\": \"array\",\r",
+									"            \"items\": {\r",
+									"              \"type\": \"object\",\r",
+									"              \"properties\": {\r",
+									"                \"reel_id\": {\r",
+									"                  \"type\": \"number\"\r",
+									"                },\r",
+									"                \"image_id\": {\r",
+									"                  \"type\": \"number\"\r",
+									"                },\r",
+									"                \"images\": {\r",
+									"                  \"type\": \"object\",\r",
+									"                  \"properties\": {\r",
+									"                    \"id\": {\r",
+									"                      \"type\": \"number\"\r",
+									"                    },\r",
+									"                    \"is_paid\": {\r",
+									"                      \"type\": \"boolean\"\r",
+									"                    },\r",
+									"                    \"filters\": {\r",
+									"                      \"type\": \"string\"\r",
+									"                    },\r",
+									"                    \"image_url\": {\r",
+									"                      \"type\": \"string\"\r",
+									"                    }\r",
+									"                  },\r",
+									"                  \"required\": [\r",
+									"                    \"id\",\r",
+									"                    \"is_paid\",\r",
+									"                    \"filters\",\r",
+									"                    \"image_url\"\r",
+									"                  ]\r",
+									"                }\r",
+									"              },\r",
+									"              \"required\": [\r",
+									"                \"reel_id\",\r",
+									"                \"image_id\",\r",
+									"                \"images\"\r",
+									"              ]\r",
+									"            }\r",
+									"          },\r",
+									"          \"reel_music\": {\r",
+									"            \"type\": \"array\",\r",
+									"            \"items\": {}\r",
+									"          },\r",
+									"          \"created\": {\r",
+									"            \"type\": \"string\"\r",
+									"          }\r",
+									"        },\r",
+									"        \"required\": [\r",
+									"          \"id\",\r",
+									"          \"reel_id\",\r",
+									"          \"location\",\r",
+									"          \"total_likes\",\r",
+									"          \"total_comments\",\r",
+									"          \"total_views\",\r",
+									"          \"total_shares\",\r",
+									"          \"is_liked\",\r",
+									"          \"allow_comments\",\r",
+									"          \"reel_images\",\r",
+									"          \"reel_music\",\r",
+									"          \"created\"\r",
+									"        ]\r",
+									"      }\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"success\",\r",
+									"    \"profile\",\r",
+									"    \"data\"\r",
+									"  ]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"Response should match the JSON schema\", function () {\r",
+									"    pm.expect(tv4.validate(response, schema)).to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Token",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/reels/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reels",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Reel",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 2s\", function () {\r",
+									"    const expectedTime = Number(pm.collectionVariables.get(\"response_time\"));\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(expectedTime);\r",
+									"});\r",
+									"const schema =\r",
+									"{\r",
+									"  \"title\": \"Generated schema for Root\",\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"success\": {\r",
+									"      \"type\": \"boolean\"\r",
+									"    },\r",
+									"    \"profile\": {\r",
+									"      \"type\": \"object\",\r",
+									"      \"properties\": {\r",
+									"        \"id\": {\r",
+									"          \"type\": \"number\"\r",
+									"        },\r",
+									"        \"user_id\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"username\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"nickname\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"profile_photo\": {}\r",
+									"      },\r",
+									"      \"required\": [\r",
+									"        \"id\",\r",
+									"        \"user_id\",\r",
+									"        \"username\",\r",
+									"        \"nickname\",\r",
+									"        \"profile_photo\"\r",
+									"      ]\r",
+									"    },\r",
+									"    \"data\": {\r",
+									"      \"type\": \"object\",\r",
+									"      \"properties\": {\r",
+									"        \"id\": {\r",
+									"          \"type\": \"number\"\r",
+									"        },\r",
+									"        \"reel_id\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"location\": {},\r",
+									"        \"total_likes\": {\r",
+									"          \"type\": \"number\"\r",
+									"        },\r",
+									"        \"total_comments\": {\r",
+									"          \"type\": \"number\"\r",
+									"        },\r",
+									"        \"total_views\": {\r",
+									"          \"type\": \"number\"\r",
+									"        },\r",
+									"        \"total_shares\": {\r",
+									"          \"type\": \"number\"\r",
+									"        },\r",
+									"        \"is_liked\": {\r",
+									"          \"type\": \"boolean\"\r",
+									"        },\r",
+									"        \"allow_comments\": {\r",
+									"          \"type\": \"boolean\"\r",
+									"        },\r",
+									"        \"reel_images\": {\r",
+									"          \"type\": \"array\",\r",
+									"          \"items\": {\r",
+									"            \"type\": \"object\",\r",
+									"            \"properties\": {\r",
+									"              \"reel_id\": {\r",
+									"                \"type\": \"number\"\r",
+									"              },\r",
+									"              \"image_id\": {\r",
+									"                \"type\": \"number\"\r",
+									"              },\r",
+									"              \"images\": {\r",
+									"                \"type\": \"object\",\r",
+									"                \"properties\": {\r",
+									"                  \"id\": {\r",
+									"                    \"type\": \"number\"\r",
+									"                  },\r",
+									"                  \"is_paid\": {\r",
+									"                    \"type\": \"boolean\"\r",
+									"                  },\r",
+									"                  \"filters\": {\r",
+									"                    \"type\": \"string\"\r",
+									"                  },\r",
+									"                  \"image_url\": {\r",
+									"                    \"type\": \"string\"\r",
+									"                  }\r",
+									"                },\r",
+									"                \"required\": [\r",
+									"                  \"id\",\r",
+									"                  \"is_paid\",\r",
+									"                  \"filters\",\r",
+									"                  \"image_url\"\r",
+									"                ]\r",
+									"              }\r",
+									"            },\r",
+									"            \"required\": [\r",
+									"              \"reel_id\",\r",
+									"              \"image_id\",\r",
+									"              \"images\"\r",
+									"            ]\r",
+									"          }\r",
+									"        },\r",
+									"        \"reel_music\": {\r",
+									"          \"type\": \"array\",\r",
+									"          \"items\": {}\r",
+									"        },\r",
+									"        \"created\": {\r",
+									"          \"type\": \"string\"\r",
+									"        }\r",
+									"      },\r",
+									"      \"required\": [\r",
+									"        \"id\",\r",
+									"        \"reel_id\",\r",
+									"        \"location\",\r",
+									"        \"total_likes\",\r",
+									"        \"total_comments\",\r",
+									"        \"total_views\",\r",
+									"        \"total_shares\",\r",
+									"        \"is_liked\",\r",
+									"        \"allow_comments\",\r",
+									"        \"reel_images\",\r",
+									"        \"reel_music\",\r",
+									"        \"created\"\r",
+									"      ]\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"success\",\r",
+									"    \"profile\",\r",
+									"    \"data\"\r",
+									"  ]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"Response should match the JSON schema\", function () {\r",
+									"    pm.expect(tv4.validate(response, schema)).to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Token",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/reels/{{reel_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reels",
+								"{{reel_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Reel",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Response time is less than 2s\", function () {\r",
+									"    const expectedTime = Number(pm.collectionVariables.get(\"response_time\"));\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(expectedTime);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-Token",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/reels/{{reel_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reels",
+								"{{reel_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Like Reel",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 2s\", function () {\r",
+									"    const expectedTime = Number(pm.collectionVariables.get(\"response_time\"));\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(expectedTime);\r",
+									"});\r",
+									"const schema =\r",
+									"  {\r",
+									"  \"title\": \"Generated schema for Root\",\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"success\": {\r",
+									"      \"type\": \"boolean\"\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"success\"\r",
+									"  ]\r",
+									"};\r",
+									"let responseData = pm.response.json();\r",
+									"pm.test(\"Response should match the JSON schema\", function () {\r",
+									"    pm.expect(tv4.validate(responseData, schema)).to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Token",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/reels/like/?reel_id={{reel_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reels",
+								"like",
+								""
+							],
+							"query": [
+								{
+									"key": "reel_id",
+									"value": "{{reel_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unlike Reel",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 2s\", function () {\r",
+									"    const expectedTime = Number(pm.collectionVariables.get(\"response_time\"));\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(expectedTime);\r",
+									"});\r",
+									"const schema =\r",
+									"  {\r",
+									"  \"title\": \"Generated schema for Root\",\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"success\": {\r",
+									"      \"type\": \"boolean\"\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"success\"\r",
+									"  ]\r",
+									"};\r",
+									"let responseData = pm.response.json();\r",
+									"pm.test(\"Response should match the JSON schema\", function () {\r",
+									"    pm.expect(tv4.validate(responseData, schema)).to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Token",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/reels/unlike/?reel_id={{reel_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reels",
+								"unlike",
+								""
+							],
+							"query": [
+								{
+									"key": "reel_id",
+									"value": "{{reel_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Save Reel",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 2s\", function () {\r",
+									"    const expectedTime = Number(pm.collectionVariables.get(\"response_time\"));\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(expectedTime);\r",
+									"});\r",
+									"const schema =\r",
+									"  {\r",
+									"  \"title\": \"Generated schema for Root\",\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"success\": {\r",
+									"      \"type\": \"boolean\"\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"success\"\r",
+									"  ]\r",
+									"};\r",
+									"let responseData = pm.response.json();\r",
+									"pm.test(\"Response should match the JSON schema\", function () {\r",
+									"    pm.expect(tv4.validate(responseData, schema)).to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Token",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/reels/save/{{reel_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reels",
+								"save",
+								"{{reel_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Saved Reels",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 2s\", function () {\r",
+									"    const expectedTime = Number(pm.collectionVariables.get(\"response_time\"));\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(expectedTime);\r",
+									"});\r",
+									"const schema =\r",
+									"  {\r",
+									"  \"title\": \"Generated schema for Root\",\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"success\": {\r",
+									"      \"type\": \"boolean\"\r",
+									"    },\r",
+									"    \"profile\": {\r",
+									"      \"type\": \"object\",\r",
+									"      \"properties\": {\r",
+									"        \"id\": {\r",
+									"          \"type\": \"number\"\r",
+									"        },\r",
+									"        \"user_id\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"username\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"nickname\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"profile_photo\": {}\r",
+									"      },\r",
+									"      \"required\": [\r",
+									"        \"id\",\r",
+									"        \"user_id\",\r",
+									"        \"username\",\r",
+									"        \"nickname\",\r",
+									"        \"profile_photo\"\r",
+									"      ]\r",
+									"    },\r",
+									"    \"data\": {\r",
+									"      \"type\": \"array\",\r",
+									"      \"items\": {\r",
+									"        \"type\": \"object\",\r",
+									"        \"properties\": {\r",
+									"          \"id\": {\r",
+									"            \"type\": \"number\"\r",
+									"          },\r",
+									"          \"reel_id\": {\r",
+									"            \"type\": \"string\"\r",
+									"          },\r",
+									"          \"location\": {},\r",
+									"          \"total_likes\": {\r",
+									"            \"type\": \"number\"\r",
+									"          },\r",
+									"          \"total_comments\": {\r",
+									"            \"type\": \"number\"\r",
+									"          },\r",
+									"          \"total_views\": {\r",
+									"            \"type\": \"number\"\r",
+									"          },\r",
+									"          \"total_shares\": {\r",
+									"            \"type\": \"number\"\r",
+									"          },\r",
+									"          \"is_liked\": {\r",
+									"            \"type\": \"boolean\"\r",
+									"          },\r",
+									"          \"allow_comments\": {\r",
+									"            \"type\": \"boolean\"\r",
+									"          },\r",
+									"          \"reel_images\": {\r",
+									"            \"type\": \"array\",\r",
+									"            \"items\": {\r",
+									"              \"type\": \"object\",\r",
+									"              \"properties\": {\r",
+									"                \"reel_id\": {\r",
+									"                  \"type\": \"number\"\r",
+									"                },\r",
+									"                \"image_id\": {\r",
+									"                  \"type\": \"number\"\r",
+									"                },\r",
+									"                \"images\": {\r",
+									"                  \"type\": \"object\",\r",
+									"                  \"properties\": {\r",
+									"                    \"id\": {\r",
+									"                      \"type\": \"number\"\r",
+									"                    },\r",
+									"                    \"is_paid\": {\r",
+									"                      \"type\": \"boolean\"\r",
+									"                    },\r",
+									"                    \"filters\": {\r",
+									"                      \"type\": \"string\"\r",
+									"                    },\r",
+									"                    \"image_url\": {\r",
+									"                      \"type\": \"string\"\r",
+									"                    }\r",
+									"                  },\r",
+									"                  \"required\": [\r",
+									"                    \"id\",\r",
+									"                    \"is_paid\",\r",
+									"                    \"filters\",\r",
+									"                    \"image_url\"\r",
+									"                  ]\r",
+									"                }\r",
+									"              },\r",
+									"              \"required\": [\r",
+									"                \"reel_id\",\r",
+									"                \"image_id\",\r",
+									"                \"images\"\r",
+									"              ]\r",
+									"            }\r",
+									"          },\r",
+									"          \"reel_music\": {\r",
+									"            \"type\": \"array\",\r",
+									"            \"items\": {}\r",
+									"          },\r",
+									"          \"created\": {\r",
+									"            \"type\": \"string\"\r",
+									"          }\r",
+									"        },\r",
+									"        \"required\": [\r",
+									"          \"id\",\r",
+									"          \"reel_id\",\r",
+									"          \"location\",\r",
+									"          \"total_likes\",\r",
+									"          \"total_comments\",\r",
+									"          \"total_views\",\r",
+									"          \"total_shares\",\r",
+									"          \"is_liked\",\r",
+									"          \"allow_comments\",\r",
+									"          \"reel_images\",\r",
+									"          \"reel_music\",\r",
+									"          \"created\"\r",
+									"        ]\r",
+									"      }\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"success\",\r",
+									"    \"profile\",\r",
+									"    \"data\"\r",
+									"  ]\r",
+									"};\r",
+									"let responseData = pm.response.json();\r",
+									"pm.test(\"Response should match the JSON schema\", function () {\r",
+									"    pm.expect(tv4.validate(responseData, schema)).to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Token",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/reels/save/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reels",
+								"save",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Save Reel",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 2s\", function () {\r",
+									"    const expectedTime = Number(pm.collectionVariables.get(\"response_time\"));\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(expectedTime);\r",
+									"});\r",
+									"const schema =\r",
+									"  {\r",
+									"  \"title\": \"Generated schema for Root\",\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"success\": {\r",
+									"      \"type\": \"boolean\"\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"success\"\r",
+									"  ]\r",
+									"};\r",
+									"let responseData = pm.response.json();\r",
+									"pm.test(\"Response should match the JSON schema\", function () {\r",
+									"    pm.expect(tv4.validate(responseData, schema)).to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-Token",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/reels/save/{{reel_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reels",
+								"save",
+								"{{reel_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reel View",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 2s\", function () {\r",
+									"    const expectedTime = Number(pm.collectionVariables.get(\"response_time\"));\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(expectedTime);\r",
+									"});\r",
+									"const schema =\r",
+									"  {\r",
+									"  \"title\": \"Generated schema for Root\",\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"success\": {\r",
+									"      \"type\": \"boolean\"\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"success\"\r",
+									"  ]\r",
+									"};\r",
+									"let responseData = pm.response.json();\r",
+									"pm.test(\"Response should match the JSON schema\", function () {\r",
+									"    pm.expect(tv4.validate(responseData, schema)).to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Token",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/reels/view/?reel_id={{reel_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reels",
+								"view",
+								""
+							],
+							"query": [
+								{
+									"key": "reel_id",
+									"value": "{{reel_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reel Share",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 2s\", function () {\r",
+									"    const expectedTime = Number(pm.collectionVariables.get(\"response_time\"));\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(expectedTime);\r",
+									"});\r",
+									"const schema =\r",
+									"  {\r",
+									"  \"title\": \"Generated schema for Root\",\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"success\": {\r",
+									"      \"type\": \"boolean\"\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"success\"\r",
+									"  ]\r",
+									"};\r",
+									"let responseData = pm.response.json();\r",
+									"pm.test(\"Response should match the JSON schema\", function () {\r",
+									"    pm.expect(tv4.validate(responseData, schema)).to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Token",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/reels/share/?reel_id={{reel_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reels",
+								"share",
+								""
+							],
+							"query": [
+								{
+									"key": "reel_id",
+									"value": "{{reel_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Comment Reel",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Token",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"reel_id\": \"{{reel_id}}\",\r\n  \"content\": \"Some Comment\",\r\n  \"image_id\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/reels/comment/create/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reels",
+								"comment",
+								"create",
+								""
 							]
 						}
 					},
@@ -9152,6 +10360,10 @@
 		},
 		{
 			"key": "post_guid",
+			"value": ""
+		},
+		{
+			"key": "reel_id",
 			"value": ""
 		}
 	]
