@@ -1,0 +1,23 @@
+{
+  "name": "alemx-newman",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "api-tests": "newman run Alemx.postman_collection.json"
+  },
+  "keywords": [
+    "api",
+    "newman",
+    "rest"
+  ],
+  "author": "Andrii Stetsula",
+  "license": "",
+  "dependencies": {
+    "allure-commandline": "^2.32.2",
+    "newman-reporter-html": "^1.0.5"
+  },
+  "devDependencies": {
+    "newman": "^6.2.1",
+    "newman-reporter-allure": "^3.2.0"
+  }
+}
