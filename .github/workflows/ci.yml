@@ -1,11 +1,11 @@
-name: Run Newman Tests
+name: Run Newman Tests and Publish Report
 
 on:
   workflow_dispatch:
   pull_request:
 
 permissions:
-  contents: write 
+  contents: write
 
 jobs:
   newman-tests:
@@ -31,13 +31,15 @@ jobs:
           newman run Alemx.postman_collection.json \
             -r cli,html \
             --reporter-html-export newman-report.html
-        continue-on-error: true
+
+      - name: Prepare report for Pages
+        run: mv newman-report.html index.html
 
       - name: Publish report to GitHub Pages
+        if: always()
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: .
-          keep_files: true
           force_orphan: true
